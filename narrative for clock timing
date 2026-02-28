@@ -1,0 +1,20 @@
+
+I have a fantasy that there might be a market for time only mechanical clocks.  A clock with a spirit and a soul.  
+I buy the movements from India:  They are , presently only made in India.  I need a good way to evaluate the performance 
+of the clocks and thought about the old gravity experiment.  This is the same thing:  much simpler, but the same.  
+I go to my stash on Arduino stuff and go the original computer and an hour later I am in business.  
+I have the tic tock intervals in millionths of a second.  It is giving me a number with every swing.  I modify it a bit.
+
+Instead of giving me a number every second, I have it average a different number of values, determined by me.  That is all. 
+Under the old plan, I was running the data into a sqlite3 database with Python.   I have no reason to mess with this.
+It occurs to me that this is a great introductory  Arduino, project.  It uses a Hall detector.  
+This implies that there is a magnet on the pendulum.  But it is wonderful.  The detector is very forgiving.
+The Arduino uno board has only three wires: ground, 5 volts and the sensor pin.
+I am unable to wake up Fritzing.  But the wiring is easy.  
+The Hall detector is a magnetic detector.  A magnet is put on the pendulum. 
+With a neodymium magnet the detector sees the pendulum at even half an inch away.  The platform is very forgiving.
+The included “.ino “ file is configured to average 300 numbers and only print after 300, about five minutes. 
+So, as written, it prints a few lines every five minutes.  A typical output is 1.076546.  This is seconds. 
+The last two digits are pretty much noise in this application.  Aas the number is printed, I take them away by diving by 100.
+This is a pretty cool project and I hope it contributes in some way.
+
