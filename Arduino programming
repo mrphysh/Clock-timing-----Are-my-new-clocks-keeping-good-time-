@@ -1,6 +1,9 @@
 // This is all about avoiding the cost of a commercial timer.
 // And this is better and faster to make.  It is easier for me to make this than to order one.
 //and Arduino is fun.
+// There is an output pin for an LED.  I have not really included this here.\
+//but, as is in the second, here the sensor from the Hall module goes in pin 4
+/(the Hall etector is a little modul with a trigger)  
 
 
 #define led_out 9
