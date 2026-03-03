@@ -1,0 +1,86 @@
+
+
+
+#define led_out 9
+#define sensor_in 4
+
+boolean val;//  this defines the variale for the input
+boolean oldval;  //old state of the variable
+
+long int mytime = 0 ;
+long int oldtime = 0;
+long int diftime = 0;
+//
+long int count  =  0;
+long int no_values = 300;
+long int present_sum = 0;
+long int total_sum = 0;
+long int avg = 0;
+//
+void setup() {
+  // put your setup code here, to run once:
+  pinMode (led_out, OUTPUT);
+  pinMode (sensor_in, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  //count = 0;
+
+  // put your main code here, to run repeatedly:
+  while (count < no_values) {
+    //count = count +1;
+    ////////////////////////////////////
+    oldval = val;
+    val = (digitalRead (sensor_in));
+
+
+    if ((val == HIGH) && (oldval == LOW))  {
+      digitalWrite (led_out, HIGH);
+
+
+    }
+    else if ((val == LOW) && (oldval == HIGH))  {
+      digitalWrite (led_out, LOW);
+
+
+
+      mytime = micros();
+      diftime = mytime - oldtime;
+      /////
+      total_sum += diftime;
+      /////
+      //Serial.print (count);
+      //Serial.print (" number   ");
+      //Serial.println (diftime);
+      //Serial.println (total_sum);
+
+      //Serial.print (" ");
+      //Serial.print (" ");
+      //Serial.print (diftime);
+
+
+      oldtime = mytime;
+      count = count + 1;
+    }
+
+    ///////////////////////////////////////////////
+    //count = 0;
+  }
+  avg = total_sum / (count);
+  Serial.print ("the average is   ");
+  Serial.println (avg/100);
+  Serial.print ("   This is average of ");
+  //Serial.println( (count), "   numbers");    not working
+  count = 0;     /////re-zero everything
+  avg = 0;
+  total_sum = 0;
+}
+//there are lots of extra lines, mostly to take out unwanted printed lines.
+//this version only prints one line and it is an average of 30 tictocks.  I am dividing it by 100 to make the numbers easier to read. and
+//those last two digits are just noise anyway.
+//I could run this all into a sqlite3 database with python, but have no reason to go that far.
+//I have determined that a tictock of 1.0583 will put my clock within a minute a day of good time.  And
+//one turn on the nut will be right at one minute a day.
+//
+//pretty cool
