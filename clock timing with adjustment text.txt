@@ -1,0 +1,96 @@
+
+
+
+#define led_out 9
+#define sensor_in 4
+
+boolean val;//  this defines the variale for the input
+boolean oldval;  //old state of the variable
+
+long int mytime = 0 ;
+long int oldtime = 0;
+long int diftime = 0;
+//
+long int count  =  0;
+long int no_values = 30;
+long int present_sum = 0;
+long int total_sum = 0;
+long int avg = 0;
+long int      target_interval = 10584;
+long int      delta_per_minute  =  6.3;   ////  this is the 0.00063 per turn
+float      rev_adj  =  0;
+float      off_amount = 0;
+//
+void setup() {
+  // put your setup code here, to run once:
+  pinMode (led_out, OUTPUT);
+  pinMode (sensor_in, INPUT);
+  Serial.begin(9600);
+  Serial.println ("  start   ");
+  Serial .println (target_interval - delta_per_minute);
+  Serial.println (target_interval + delta_per_minute);
+}
+
+void loop() {
+  //count = 0;
+
+  // put your main code here, to run repeatedly:
+  while (count < no_values) {
+    //count = count +1;
+    ////////////////////////////////////
+    oldval = val;
+    val = (digitalRead (sensor_in));
+
+
+    if ((val == HIGH) && (oldval == LOW))  {
+      digitalWrite (led_out, HIGH);
+
+
+    }
+    else if ((val == LOW) && (oldval == HIGH))  {
+      digitalWrite (led_out, LOW);
+
+
+
+      mytime = micros();
+      diftime = mytime - oldtime;
+      diftime = ((diftime - 1.0) / 100);
+      /////
+      total_sum += diftime;
+      /////
+      //Serial.print (count);
+      //Serial.print (" number   ");
+      //Serial.println (diftime);
+      //Serial.println (total_sum);
+
+      //Serial.print (" ");
+      //Serial.print (" ");
+      //Serial.print (diftime);
+
+
+      oldtime = mytime;
+      count = count + 1;
+      //Serial.println (count);
+    }
+
+    ///////////////////////////////////////////////
+    //count = 0;
+  }
+  avg = total_sum / (count);
+  Serial.print ("                                                   the average is   ");
+  Serial.println (avg);
+  Serial.print (" this is an average of    ");
+  Serial.println (no_values);
+
+
+  off_amount = (target_interval - avg);
+  Serial.print ("   This is the difference between the average and the target   ");
+  Serial.println (  (off_amount));
+  rev_adj = ( (off_amount) / (delta_per_minute));
+  Serial.print  (rev_adj);
+  Serial.println ("  positive is down  ");
+  Serial.println ("The target is 10584 and the adj per turn is 6.3");
+  count = 0;
+  avg = 0;
+  total_sum = 0;
+}
